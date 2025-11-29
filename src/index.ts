@@ -1,11 +1,6 @@
 import {
-  Exception,
   getAppErrorsApi,
-  getErrors,
   initDB,
-  numberQueryValidator,
-  stringQueryValidator,
-  validateJsonQuery,
 } from "./core";
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
@@ -13,8 +8,6 @@ import express from "express";
 import { errorMiddleWare } from "./core";
 import { authRouter } from "./app/auth/auth-router";
 import * as qs from "qs";
-import Joi from "joi";
-import { getQueries } from "./core/db/mongoose-queries-util";
 import { userRouter } from "./app/users/user-router";
 initDB();
 
