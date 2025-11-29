@@ -1,17 +1,34 @@
-import { initDB } from "./db";
+import {
+  Exception,
+  getAppErrorsApi,
+  getErrors,
+  initDB,
+  numberQueryValidator,
+  stringQueryValidator,
+  validateJsonQuery,
+} from "./core";
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
 import express from "express";
-import { errorMiddleWare } from "./middleware";
-import { authRouter, userRouter } from "./app/routes";
-import bodyParser from "body-parser";
+import { errorMiddleWare } from "./core";
+import { authRouter } from "./app/auth/auth-router";
+import * as qs from "qs";
+import Joi from "joi";
+import { getQueries } from "./core/db/mongoose-queries-util";
+import { userRouter } from "./app/users/user-router";
 initDB();
 
 let app = express();
 
 app.use(express.json());
 
+app.set("query parser", (str: string) => qs.parse(str));
+
 app.use("/auth", authRouter);
+
+app.use("/users", userRouter);
+
+app.use("/errors" , getAppErrorsApi)
 
 app.use(errorMiddleWare);
 
